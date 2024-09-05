@@ -13,9 +13,15 @@ private:
 	void OnResize(wxSizeEvent& evt);
 	void NewTab(wxCommandEvent& evt);
 	void BindEventHandlers();
+	void CloseTab(wxCommandEvent& evt);
 
 	wxPanel* panel;
 	wxWindow* window;	
 	wxNotebook* notebook;
 	wxButton* addTabButton;
+	wxMenuBar* menuBar;
+	wxMenu* menuFile;
+	wxMenu* menuHelp;
+	wxMenu* menuTools;
+	wxStatusBar* statusBar;
 };

@@ -14,11 +14,27 @@ Main::Main(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
 void Main::controls() {
 	panel = new wxPanel(this);
 
-	addTabButton = new wxButton(panel, wxID_ANY, "Add Tab", wxPoint(10, 10));
+	//addTabButton = new wxButton(panel, wxID_ANY, "Add Tab", wxPoint(10, 10));
 
 	notebook = new wxNotebook(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
+	menuBar = new wxMenuBar;
 	
+	menuFile = new wxMenu;
+	menuTools = new wxMenu();
+	menuHelp = new wxMenu();
+
+	menuFile->Append(wxID_OPEN, wxT("&Open File"));
+	menuFile->Append(wxID_CLOSE, wxT("&Close File"));
+	
+	menuBar->Append(menuFile, wxT("&File"));
+	menuBar->Append(menuHelp, wxT("&Help"));
+	menuBar->Append(menuTools, wxT("&File"));
+
+	statusBar = this->CreateStatusBar();
+	
+
+	SetMenuBar(menuBar);
 
 	wxBoxSizer* tabsSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -41,12 +57,26 @@ void Main::OnResize(wxSizeEvent& evt){
 }
 
 void Main::BindEventHandlers() {
-	addTabButton->Bind(wxEVT_BUTTON, &Main::NewTab, this);
+
+	//addTabButton->Bind(wxEVT_BUTTON, &Main::NewTab, this);
+	menuFile->Bind(wxEVT_MENU, &Main::NewTab, this, wxID_OPEN);
+	menuFile->Bind(wxEVT_MENU, &Main::CloseTab, this, wxID_CLOSE);
+}
+
+void Main::CloseTab(wxCommandEvent& evt) {
+	statusBar->SetStatusText("closedtab");
+	int openPage = notebook->GetSelection();
+	if (openPage == wxNOT_FOUND){
+		return;
+	}
+	notebook->DeletePage(openPage);
+	
 }
 
 
 
 void Main::NewTab(wxCommandEvent& evt) {
+
 	wxPanel* tab = new wxPanel(notebook, wxID_ANY);
 
 	wxButton* button1 = new wxButton(tab, wxID_ANY, "left");
@@ -69,4 +99,7 @@ void Main::NewTab(wxCommandEvent& evt) {
 	tab->SetSizer(mainSizer);
 
 	notebook->AddPage(tab, L"Tab");
+	statusBar->SetStatusText("newtab");
 }
+
+
