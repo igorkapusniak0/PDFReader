@@ -11,10 +11,11 @@ private:
 
 	void OnWindowsClose(wxCloseEvent& evt);
 	void OnResize(wxSizeEvent& evt);
-	void NewTab();
+	void NewTab(wxCommandEvent& evt);
+	void BindEventHandlers();
 
 	wxPanel* panel;
-	wxPanel* tab;
 	wxWindow* window;	
 	wxNotebook* notebook;
+	wxButton* addTabButton;
 };
